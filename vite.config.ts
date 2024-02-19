@@ -20,7 +20,7 @@ export default defineConfig({
       fileName: (format) => `index.${ext[format]}`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@virtuoso.dev/urx', '@virtuoso.dev/react-urx'],
+      external: ['react', 'react-dom', '@juggle/resize-observer', 'react/jsx-runtime', '@virtuoso.dev/urx', '@virtuoso.dev/react-urx'],
     },
   },
   test: {
