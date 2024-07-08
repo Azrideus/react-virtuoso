@@ -99,7 +99,7 @@ const GridItems: React.FC = /*#__PURE__*/ React.memo(function GridItems() {
       className: listClassName,
       ...contextPropIfNotDomElement(ListComponent, context),
       style: { paddingTop: gridState.offsetTop, paddingBottom: gridState.offsetBottom },
-      'data-test-id': 'virtuoso-item-list',
+      'data-testid': 'virtuoso-item-list',
     },
     gridState.items.map((item) => {
       const key = computeItemKey(item.index, item.data, context)
@@ -159,7 +159,7 @@ const Viewport: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   }, [ctx, viewportDimensions, itemDimensions])
 
   return (
-    <div style={viewportStyle} ref={viewportRef}>
+    <div style={viewportStyle(false)} ref={viewportRef}>
       {children}
     </div>
   )
@@ -180,7 +180,7 @@ const WindowViewport: React.FC<React.PropsWithChildren<unknown>> = ({ children }
   }, [ctx, windowViewportRect, itemDimensions])
 
   return (
-    <div ref={viewportRef} style={viewportStyle}>
+    <div ref={viewportRef} style={viewportStyle(false)}>
       {children}
     </div>
   )

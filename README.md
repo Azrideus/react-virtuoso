@@ -2,10 +2,10 @@
 
 [![npm version](https://img.shields.io/npm/v/react-virtuoso.svg?style=flat)](//badge.fury.io/js/react-virtuoso)
 
-**React Virtuoso** is the most powerful React virtual list/table component, full stop. Here's why:
+**React Virtuoso** - the most complete React virtualization rendering list/table/grid family of components.
 
 - Variable sized items out of the box; no manual measurements or hard-coding item heights is necessary;
-- Support for [reverse (bottom up) scrolling and prepending items](https://virtuoso.dev/prepend-items/) (chat, feeds, etc);
+- [Chat message list UI](https://virtuoso.dev/virtuoso-message-list/) **NEW**;
 - [Grouped mode with sticky headers](https://virtuoso.dev/grouped-by-first-letter/);
 - [Responsive grid layout](https://virtuoso.dev/grid-responsive-columns/);
 - [Table Support](https://virtuoso.dev/hello-table/);
@@ -39,6 +39,11 @@ const App = () => {
 
 ReactDOM.render(<App />, document.getElementById('root'))
 ```
+
+## [Message List](https://virtuoso.dev/virtuoso-message-list/)
+
+The Virtuoso message list component is built specifically for human/chatbot conversations. In addition to the virtualized rendering, the component exposes an imperative data management 
+API that gives you the necessary control over the scroll position when older messages are loaded, new messages arrive, and when the user submits a message. The scroll position can update instantly or with a smooth scroll animation.
 
 ## [Grouped Mode](https://virtuoso.dev/grouped-by-first-letter/)
 
@@ -90,12 +95,7 @@ To run the tests, use `npm run test`.
 An end-to-end browser-based test suite is runnable with `npm run e2e`, with the pages being `e2e/*.tsx` and the tests `e2e/*.test.ts`.
 
 A convenient way to debug something is to preview the test cases in the browser.
-To do that, run `npm run browse-examples` - it will open a crude UI that lets you browse the components in the `e2e` folder.
-
-### Docs
-
-The documentation site is built with docusaurus and the content is available in the `site/docs` directory.
-The API reference is generated from the doc comments in `src/components.tsx`.
+To do that, run `npm run dev` - it will launch a Ladle server that lets you browse the components in the `examples` folder.
 
 ## License
 

@@ -111,17 +111,17 @@ const Items = /*#__PURE__*/ React.memo(function VirtuosoItems({ showTopList = fa
   const computeItemKey = useEmitterValue('computeItemKey')
   const isSeeking = useEmitterValue('isSeeking')
   const hasGroups = useEmitterValue('groupIndices').length > 0
-  const paddingTopAddition = useEmitterValue('paddingTopAddition')
-  const scrolledToInitialItem = useEmitterValue('scrolledToInitialItem')
+  const alignToBottom = useEmitterValue('alignToBottom')
+  const initialItemFinalLocationReached = useEmitterValue('initialItemFinalLocationReached')
 
   const containerStyle: React.CSSProperties = showTopList
     ? {}
     : {
         boxSizing: 'border-box',
-        paddingTop: listState.offsetTop + paddingTopAddition,
+        paddingTop: listState.offsetTop,
         paddingBottom: listState.offsetBottom,
-        marginTop: deviation,
-        ...(scrolledToInitialItem ? {} : { visibility: 'hidden' }),
+        marginTop: deviation !== 0 ? deviation : alignToBottom ? 'auto' : 0,
+        ...(initialItemFinalLocationReached ? {} : { visibility: 'hidden' }),
       }
 
   if (!showTopList && listState.totalCount === 0 && EmptyPlaceholder) {
@@ -134,7 +134,7 @@ const Items = /*#__PURE__*/ React.memo(function VirtuosoItems({ showTopList = fa
       ...contextPropIfNotDomElement(ListComponent, context),
       ref: callbackRef,
       style: containerStyle,
-      'data-test-id': showTopList ? 'virtuoso-top-item-list' : 'virtuoso-item-list',
+      'data-testid': showTopList ? 'virtuoso-top-item-list' : 'virtuoso-item-list',
     },
     (showTopList ? listState.topItems : listState.items).map((item) => {
       const index = item.originalIndex!
@@ -194,12 +194,13 @@ export const scrollerStyle: React.CSSProperties = {
   WebkitOverflowScrolling: 'touch',
 }
 
-export const viewportStyle: React.CSSProperties = {
+export const viewportStyle: (alignToBottom: boolean) => React.CSSProperties = (alignToBottom) => ({
   width: '100%',
   height: '100%',
   position: 'absolute',
   top: 0,
-}
+  ...(alignToBottom ? { display: 'flex', flexDirection: 'column' } : {}),
+})
 
 const topItemListStyle: React.CSSProperties = {
   width: '100%',
@@ -269,7 +270,7 @@ export function buildScroller({ usePublisher, useEmitter, useEmitterValue }: Hoo
       {
         ref: scrollerRef as React.MutableRefObject<HTMLDivElement | null>,
         style: { ...scrollerStyle, ...style },
-        'data-test-id': 'virtuoso-scroller',
+        'data-testid': 'virtuoso-scroller',
         'data-virtuoso-scroller': true,
         tabIndex: 0,
         ...props,
@@ -325,6 +326,7 @@ const Viewport: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   const ctx = React.useContext(VirtuosoMockContext)
   const viewportHeight = usePublisher('viewportHeight')
   const fixedItemHeight = usePublisher('fixedItemHeight')
+  const alignToBottom = useEmitterValue('alignToBottom')
   const viewportRef = useSize(u.compose(viewportHeight, (el) => correctItemSize(el, 'height')))
 
   React.useEffect(() => {
@@ -335,7 +337,7 @@ const Viewport: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   }, [ctx, viewportHeight, fixedItemHeight])
 
   return (
-    <div style={viewportStyle} ref={viewportRef} data-viewport-type="element">
+    <div style={viewportStyle(alignToBottom)} ref={viewportRef} data-viewport-type="element">
       {children}
     </div>
   )
@@ -347,6 +349,7 @@ const WindowViewport: React.FC<React.PropsWithChildren<unknown>> = ({ children }
   const fixedItemHeight = usePublisher('fixedItemHeight')
   const customScrollParent = useEmitterValue('customScrollParent')
   const viewportRef = useWindowViewportRectRef(windowViewportRect, customScrollParent)
+  const alignToBottom = useEmitterValue('alignToBottom')
 
   React.useEffect(() => {
     if (ctx) {
@@ -356,7 +359,7 @@ const WindowViewport: React.FC<React.PropsWithChildren<unknown>> = ({ children }
   }, [ctx, windowViewportRect, fixedItemHeight])
 
   return (
-    <div ref={viewportRef} style={viewportStyle} data-viewport-type="window">
+    <div ref={viewportRef} style={viewportStyle(alignToBottom)} data-viewport-type="window">
       {children}
     </div>
   )
