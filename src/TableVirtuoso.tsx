@@ -104,9 +104,11 @@ const Items = /*#__PURE__*/ React.memo(function VirtuosoItems() {
   )
 
   const [deviation, setDeviation] = React.useState(0)
-  useEmitter('deviation', (value) => {
-    if (deviation !== value) {
-      ref.current!.style.marginTop = `${value}px`
+	useEmitter('deviation', (value) => {
+    if (!ref.current) {
+      console.error('useEmitter-deviation: ref.current is not set')
+    } else if (deviation !== value) {
+      ref.current.style.marginTop = `${value}px`
       setDeviation(value)
     }
   })

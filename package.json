@@ -2,7 +2,7 @@
   "name": "@azrico/react-virtuoso",
   "author": "Petyo Ivanov",
   "sideEffects": false,
-  "version": "4.7.11",
+  "version": "4.7.11-rc.1",
   "homepage": "https://virtuoso.dev/",
   "license": "MIT",
   "source": "src/index.tsx",
